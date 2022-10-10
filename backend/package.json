@@ -112,6 +112,6 @@
       "!src/*.ts"
     ],
     "testEnvironment": "node",
-    "verbose": false
+    "verbose": true
   }
 }

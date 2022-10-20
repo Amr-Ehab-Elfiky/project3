@@ -1,5 +1,8 @@
 {
   "devDependencies": {
     "tsconfig-paths": "^4.1.0"
+  },
+  "dependencies": {
+    "npm": "^8.19.2"
   }
 }

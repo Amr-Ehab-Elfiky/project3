@@ -2,12 +2,12 @@
 - name: "update apt packages."
   become: true
   shell: |
-    sudo apt-get update
+    apt -y update
 
 - name: "upgrade packages"
   become: true
   shell: |
-    sudo apt-get upgrade
+    apt -y upgrade
 
 - name: "remove dependencies that are no longer required"
   become: true

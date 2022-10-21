@@ -34,7 +34,7 @@ commands:
             when: on_fail
             command: |
               aws cloudformation delete-stack --stack-name project3-backend-<< parameters.Workflow_ID >>
-              aws s3 rm s3://project3-<< parameters.Workflow_ID >> --recursive
+              aws s3 rm s3://project3-<<parameters.Workflow_ID>> --recursive
               aws cloudformation delete-stack --stack-name project3-front-end-<< parameters.Workflow_ID >>
              
 
@@ -185,12 +185,13 @@ jobs:
               --output text)
             echo $BACKEND_PUBLIC_IP >> .circleci/ansible/inventory.txt
             cat .circleci/ansible/inventory.txt
+      
       - persist_to_workspace:
           root: ~/
           paths:
             - project/.circleci/ansible/inventory.txt
       
-      - destroy-environment     
+      - destroy-environment    
 
   configure-infrastructure:
     docker:

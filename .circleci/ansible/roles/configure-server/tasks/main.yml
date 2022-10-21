@@ -9,11 +9,6 @@
   shell: |
     apt -y upgrade
 
-- name: "remove dependencies that are no longer required"
-  become: true
-  apt:
-    autoremove: yes
-
 - name: "Add Node.js from Nodesource"
   become: true
   shell: |

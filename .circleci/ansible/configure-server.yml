@@ -23,4 +23,4 @@
  
   roles:
     - configure-server
-    - configure-prometheus-node-ecporter
+    - configure-prometheus-node-exporter

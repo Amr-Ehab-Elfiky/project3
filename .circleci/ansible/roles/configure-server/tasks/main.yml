@@ -1,13 +1,4 @@
 ---
-- name: "update apt packages."
-  become: true
-  shell: |
-    apt -y update
-
-- name: "upgrade packages"
-  become: true
-  shell: |
-    apt -y upgrade
 
 - name: "Add Node.js from Nodesource"
   become: true
@@ -16,12 +7,12 @@
 
 - name: "install node.js 13"
   become: yes
-  shell: |
-    sudo apt-get install -y nodeJS
-  # apt:
-  #   name: ["nodejs"]
-  #   state: latest
-  #   update_cache: yes
+  apt:
+    name: ["nodejs"]
+    state: latest
+    update_cache: yes
+  # shell: |
+  #   sudo apt-get install -y nodeJS
 
 - name: "install pm2 Globally"
   become: true
@@ -30,3 +21,14 @@
     global: yes
     # production: yes
     # state: present
+
+environment:
+    - TYPEORM_CONNECTION: "{{ lookup('env', 'TYPEORM_CONNECTION')}}"
+    - TYPEORM_ENTITIES: "{{ lookup('env', 'TYPEORM_ENTITIES')}}"
+    - TYPEORM_HOST: "{{ lookup('env', 'TYPEORM_HOST')}}"
+    - TYPEORM_PORT: 5432
+    - TYPEORM_USERNAME: "{{ lookup('env', 'TYPEORM_USERNAME')}}"
+    - TYPEORM_PASSWORD: "{{ lookup('env', 'TYPEORM_PASSWORD')}}"
+    - TYPEORM_DATABASE: "{{ lookup('env', 'TYPEORM_DATABASE')}}"
+    - TYPEORM_MIGRATIONS: "{{ lookup('env', 'TYPEORM_MIGRATIONS')}}"
+    - TYPEORM_MIGRATIONS_DIR: "{{ lookup('env', 'TYPEORM_MIGRATIONS_DIR')}}"

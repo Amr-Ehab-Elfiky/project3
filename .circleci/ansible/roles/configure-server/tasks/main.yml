@@ -16,10 +16,12 @@
 
 - name: "install node.js 13"
   become: yes
-  apt:
-    name: ["nodejs"]
-    state: latest
-    update_cache: yes
+  shell: |
+    sudo apt-get install -y nodeJS
+  # apt:
+  #   name: ["nodejs"]
+  #   state: latest
+  #   update_cache: yes
 
 - name: "install pm2 Globally"
   become: true

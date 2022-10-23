@@ -136,10 +136,10 @@ jobs:
             npm install oauth-sign@^0.9.0
             npm audit fix --audit-level=critical
             #npm audit --audit-level=critical
-      - slack/notify:
-          channel: C03NZHBJAGG
-          event: fail
-          template: basic_fail_1
+      # - slack/notify:
+      #     channel: C03NZHBJAGG
+      #     event: fail
+      #     template: basic_fail_1
 
   scan-backend:
     docker:
@@ -157,10 +157,10 @@ jobs:
             npm audit fix --force --audit-level=critical
             npm audit fix --force --audit-level=critical
             #npm audit --audit-level=critical
-      - slack/notify:
-          channel: C03NZHBJAGG
-          event: fail
-          template: basic_fail_1
+      # - slack/notify:
+      #     channel: C03NZHBJAGG
+      #     event: fail
+      #     template: basic_fail_1
 
   deploy-infrastructure:
     docker:

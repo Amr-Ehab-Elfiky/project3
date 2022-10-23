@@ -244,17 +244,16 @@ jobs:
             npm install      
             npm run migrations > migrations_dump.txt
             cat migrations_dump.txt
-
       - run: 
           name: Send Migration Results to kvdb.io
           command: |
             if grep -q "has been executed successfully." ~/project/backend/migrations_dump.txt
             then
-              # If you are use kvdb.io, generate the bucket ID "12Ed7riAZ1ah9JudkmAJYn6K" in your local terminal first
+              # If you are using kvdb.io, generate the bucket ID "12Ed7riAZ1ah9JudkmAJYn6K" in your local terminal first
               curl -d '1' https://kvdb.io/12Ed7riAZ1ah9JudkmAJYn6K/migration_${CIRCLE_WORKFLOW_ID:0:7}  
             fi
       - revert-migrations
-      - destroy-environment
+      #- destroy-environment
 
 
 

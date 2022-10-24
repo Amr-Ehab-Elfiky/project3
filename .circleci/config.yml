@@ -1,7 +1,7 @@
 
 version: 2.1
-orbs: 
-  slack: circleci/slack@4.10.1
+    # orbs: 
+    #   slack: circleci/slack@4.10.1
 commands:
 
   install_ansible:
@@ -36,7 +36,7 @@ commands:
           name: Revert migrations
           when: on_fail
           command: |
-            SUCCESS=$(curl --insecure  https://kvdb.io/Up68KQvVZCMC32AM4i2mJR/migration_<< parameters.Workflow_ID >>)
+            SUCCESS=$(curl --insecure  https://kvdb.io/6aFD4aSaM99SWWQUzptYTk/migration_<< parameters.Workflow_ID >>)
             # Logic for reverting the database state
             if (( $SUCCESS == 1 ));
             then

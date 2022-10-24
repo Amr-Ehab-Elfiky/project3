@@ -240,8 +240,8 @@ jobs:
       - run:
           name: Run migrations
           command: |
-            cd backend 
-            npm install      
+            cd backend
+            npm install     
             npm run migrations > migrations_dump.txt
             cat migrations_dump.txt
 
@@ -251,7 +251,7 @@ jobs:
             if grep -q "has been executed successfully." ~/project/backend/migrations_dump.txt
             then
               # If you are using kvdb.io, generate the bucket ID "Yb81p1jNcDxvSTuh15zcJX" in your local terminal first
-              curl -d '1' https://kvdb.io/6aFD4aSaM99SWWQUzptYTk/migration_${CIRCLE_WORKFLOW_ID:0:7}  
+              curl -d '1' https://kvdb.io/${KVDP_BUCKET}/migration_${CIRCLE_WORKFLOW_ID:0:7}  
             fi
       - revert-migrations
       - destroy-environment

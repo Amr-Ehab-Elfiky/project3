@@ -1,7 +1,7 @@
 
 version: 2.1
-    #  orbs: 
-    #    slack: circleci/slack@4.10.1
+orbs: 
+  slack: circleci/slack@4.10.1
 commands:
 
   install_ansible:
@@ -36,7 +36,7 @@ commands:
           name: Revert migrations
           when: on_fail
           command: |
-            SUCCESS=$(curl --insecure  https://kvdb.io/12Ed7riAZ1ah9JudkmAJYn6K/migration_<< parameters.Workflow_ID >>)
+            SUCCESS=$(curl --insecure  https://kvdb.io/Up68KQvVZCMC32AM4i2mJR/migration_<< parameters.Workflow_ID >>)
             # Logic for reverting the database state
             if (( $SUCCESS == 1 ));
             then
@@ -136,10 +136,10 @@ jobs:
             npm install oauth-sign@^0.9.0
             npm audit fix --audit-level=critical
             #npm audit --audit-level=critical
-      # - slack/notify:
-      #     channel: C03NZHBJAGG
-      #     event: fail
-      #     template: basic_fail_1
+      - slack/notify:
+          channel: C03NZHBJAGG
+          event: fail
+          template: basic_fail_1
 
   scan-backend:
     docker:
@@ -157,10 +157,10 @@ jobs:
             npm audit fix --force --audit-level=critical
             npm audit fix --force --audit-level=critical
             #npm audit --audit-level=critical
-      # - slack/notify:
-      #     channel: C03NZHBJAGG
-      #     event: fail
-      #     template: basic_fail_1
+      - slack/notify:
+          channel: C03NZHBJAGG
+          event: fail
+          template: basic_fail_1
 
   deploy-infrastructure:
     docker:
@@ -244,16 +244,17 @@ jobs:
             npm install      
             npm run migrations > migrations_dump.txt
             cat migrations_dump.txt
+
       - run: 
           name: Send Migration Results to kvdb.io
           command: |
             if grep -q "has been executed successfully." ~/project/backend/migrations_dump.txt
             then
-              # If you are using kvdb.io, generate the bucket ID "12Ed7riAZ1ah9JudkmAJYn6K" in your local terminal first
-              curl -d '1' https://kvdb.io/12Ed7riAZ1ah9JudkmAJYn6K/migration_${CIRCLE_WORKFLOW_ID:0:7}  
+              # If you are using kvdb.io, generate the bucket ID "Yb81p1jNcDxvSTuh15zcJX" in your local terminal first
+              curl -d '1' https://kvdb.io/6aFD4aSaM99SWWQUzptYTk/migration_${CIRCLE_WORKFLOW_ID:0:7}  
             fi
       - revert-migrations
-      #- destroy-environment
+      - destroy-environment
 
 
 
@@ -387,7 +388,7 @@ jobs:
             yum install -y curl
             export OLD_WORKFLOW_ID=$(aws cloudformation list-exports --query "Exports[?Name==\`WorkflowID\`].Value" --no-paginate --output text)
             echo "Old Wokflow ID: $OLD_WORKFLOW_ID"
-            curl https://kvdb.io/12Ed7riAZ1ah9JudkmAJYn6K/old_workflow_id-2 -d "${CIRCLE_WORKFLOW_ID:0:7}"
+            curl https://kvdb.io/6aFD4aSaM99SWWQUzptYTk/old_workflow_id-2 -d "${CIRCLE_WORKFLOW_ID:0:7}"
       - run:
           name: Update cloudfront distribution
           command: |
@@ -408,7 +409,7 @@ jobs:
           name: Remove old stacks and files
           command: |
             yum install -y curl         
-            export OLDWORKFLOWID=$(curl --insecure https://kvdb.io/12Ed7riAZ1ah9JudkmAJYn6K/old_workflow_id-2)
+            export OLDWORKFLOWID=$(curl --insecure https://kvdb.io/6aFD4aSaM99SWWQUzptYTk/old_workflow_id-2)
             echo Old Workflow ID: $OLDWORKFLOWID 
             echo CIRCLE_WORKFLOW_ID "${CIRCLE_WORKFLOW_ID:0:7}"
             # Fetch the stack names 

@@ -420,7 +420,7 @@ jobs:
             --stack-name InitialStack \
             --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:7}" \
       - destroy-environment
-      - revert-migrations  
+      - revert-migrations   
       
   # cleaning up
   cleanup: 
@@ -453,7 +453,7 @@ jobs:
             export OLDWORKFLOWID=$(curl --insecure https://kvdb.io/6nF57BbaBTrcAdmiBpVuVM/old_workflow_id-2)
             echo Old Workflow ID: $OLDWORKFLOWID 
             
-            if [[ udapeople-${WorkflowID} =~ ${OLDWORKFLOWID} ]]
+            if [[ ${WorkflowID} =~ ${OLDWORKFLOWID} ]]
             then
               aws s3 rm "s3://udapeople-${OLDWORKFLOWID}" --recursive
               aws cloudformation delete-stack --stack-name "udapeople-backend-${OLDWORKFLOWID}"

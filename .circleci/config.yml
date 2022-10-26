@@ -52,7 +52,7 @@ commands:
               npm run migration:revert
             fi
 
-  #creating destroy-environment
+  #creating destroy environment
   destroy-environment: 
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
     parameters:

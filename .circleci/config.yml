@@ -423,37 +423,25 @@ jobs:
       - revert-migrations   
       
   # cleaning up
-  cleanup: 
+  cleanup:
     docker:
-      - image: cimg/base:stable #amazon/aws-cli
+      - image: amazon/aws-cli
     steps:
       - checkout
-      - run: 
-          name: Install aws_cli
-          command: |
-            #test
-            sudo apt-get update && sudo apt-get install -yy less
-            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-            unzip awscliv2.zip
-            sudo ./aws/install    
-      - install_nodejs
       - run:
           name: Remove old stacks and files
           command: |
-            # yum install -y curl         
-            # export OLDWORKFLOWID=$(curl --insecure https://kvdb.io/6nF57BbaBTrcAdmiBpVuVM/old_workflow_id-2)
-            # echo Old Workflow ID: $OLDWORKFLOWID 
-            # echo CIRCLE_WORKFLOW_ID "${CIRCLE_WORKFLOW_ID:0:7}"
-                        
-            # Fetch the stack names 
+          
+            yum install -y curl         
+            export OLDWORKFLOWID=$(curl --insecure https://kvdb.io/Yb81p1jNcDxvSTuh15zcJX/old_workflow_id-2)
+            echo Old Workflow ID: $OLDWORKFLOWID 
+           
+            echo CIRCLE_WORKFLOW_ID "${CIRCLE_WORKFLOW_ID:0:7}"
+            # Fetch the stack names          
             export STACKS=($(aws cloudformation list-stacks --query "StackSummaries[*].StackName" \
             --stack-status-filter CREATE_COMPLETE --no-paginate --output text)) 
-            echo Stack names: "${STACKS[@]}"          
-            
-            export OLDWORKFLOWID=$(curl --insecure https://kvdb.io/6nF57BbaBTrcAdmiBpVuVM/old_workflow_id-2)
-            echo Old Workflow ID: $OLDWORKFLOWID 
-            
-            if [[ ${WorkflowID} =~ ${OLDWORKFLOWID} ]]
+            echo Stack names: "${STACKS[@]}"           
+            if [[ "${STACKS[@]}" =~ ${OLDWORKFLOWID} ]]
             then
               aws s3 rm "s3://udapeople-${OLDWORKFLOWID}" --recursive
               aws cloudformation delete-stack --stack-name "udapeople-backend-${OLDWORKFLOWID}"
@@ -462,6 +450,46 @@ jobs:
             else
               echo cant clean
             fi
+  
+  # cleanup: 
+  #   docker:
+  #     - image: cimg/base:stable #amazon/aws-cli
+  #   steps:
+  #     - checkout
+  #     - run: 
+  #         name: Install aws_cli
+  #         command: |
+  #           #test
+  #           sudo apt-get update && sudo apt-get install -yy less
+  #           curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+  #           unzip awscliv2.zip
+  #           sudo ./aws/install    
+  #     - install_nodejs
+  #     - run:
+  #         name: Remove old stacks and files
+  #         command: |
+  #           # yum install -y curl         
+  #           # export OLDWORKFLOWID=$(curl --insecure https://kvdb.io/6nF57BbaBTrcAdmiBpVuVM/old_workflow_id-2)
+  #           # echo Old Workflow ID: $OLDWORKFLOWID 
+  #           # echo CIRCLE_WORKFLOW_ID "${CIRCLE_WORKFLOW_ID:0:7}"
+                        
+  #           # Fetch the stack names 
+  #           export STACKS=($(aws cloudformation list-stacks --query "StackSummaries[*].StackName" \
+  #           --stack-status-filter CREATE_COMPLETE --no-paginate --output text)) 
+  #           echo Stack names: "${STACKS[@]}"          
+            
+  #           export OLDWORKFLOWID=$(curl --insecure https://kvdb.io/6nF57BbaBTrcAdmiBpVuVM/old_workflow_id-2)
+  #           echo Old Workflow ID: $OLDWORKFLOWID 
+            
+  #           if [[ ${WorkflowID} =~ ${OLDWORKFLOWID} ]]
+  #           then
+  #             aws s3 rm "s3://udapeople-${OLDWORKFLOWID}" --recursive
+  #             aws cloudformation delete-stack --stack-name "udapeople-backend-${OLDWORKFLOWID}"
+  #             aws cloudformation delete-stack --stack-name "udapeople-frontend-${OLDWORKFLOWID}"
+  #             echo cleaning confirmed
+  #           else
+  #             echo cant clean
+  #           fi
 
 # project3 workflows
 workflows:  

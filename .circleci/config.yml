@@ -4,7 +4,17 @@
   #Data:october
 
 version: 2.1
+orbs:
+  slack: circleci/slack@4.10.1
+
 commands:
+  notify_on_failure:
+    steps:
+      - stack/notify:
+        event: fail
+        channel: fwd-project
+        template: basic_fail_1
+
   #installing ansible 
   install_ansible: 
     description: Install Ansible
@@ -150,6 +160,7 @@ jobs:
             npm install oauth-sign@^0.9.0
             npm audit fix --audit-level=critical
             #npm audit --audit-level=critical
+      - notify_on_failure
       
   # scaning backend
   scan-backend: 
@@ -168,7 +179,7 @@ jobs:
             npm audit fix --force --audit-level=critical
             npm audit fix --force --audit-level=critical
             #npm audit --audit-level=critical
-
+      - notify_on_failure
   # deploying the infrastructure
   deploy-infrastructure: 
     docker:
@@ -209,7 +220,7 @@ jobs:
           paths:
             - project/.circleci/ansible/inventory.txt
       - destroy-environment
-
+          
   # configuring the infrastructure
   configure-infrastructure: 
     docker:

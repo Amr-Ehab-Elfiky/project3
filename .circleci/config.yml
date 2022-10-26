@@ -354,7 +354,7 @@ jobs:
       - destroy-environment   
       - revert-migrations 
   
-  # creating smoke-test
+  # creating smoke test
   smoke-test: 
     docker:
       - image: amazon/aws-cli
@@ -443,12 +443,13 @@ jobs:
             echo Stack names: "${STACKS[@]}"           
             if [[ "${STACKS[@]}" =~ ${OLDWORKFLOWID} ]]
             then
+              echo cant clean
+              
+            else
               aws s3 rm "s3://udapeople-${OLDWORKFLOWID}" --recursive
               aws cloudformation delete-stack --stack-name "udapeople-backend-${OLDWORKFLOWID}"
               aws cloudformation delete-stack --stack-name "udapeople-frontend-${OLDWORKFLOWID}"
               echo cleaning confirmed
-            else
-              echo cant clean
             fi
   
   # cleanup: 
